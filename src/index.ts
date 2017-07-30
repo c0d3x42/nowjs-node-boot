@@ -53,7 +53,8 @@ export function boot(options: BootOptions) {
             }
 
         } else {
-            throw new ArgumentException("The argument(s) type or value mismatched . please see the '--help'  ");
+            throw new ArgumentException(
+                "The argument(s) type or value mismatched . please see the with '--help' options ");
         }
 
     } catch (error) {
