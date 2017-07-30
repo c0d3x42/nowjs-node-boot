@@ -1,0 +1,38 @@
+{
+    "globals": {
+        "ts-jest": {
+            "tsConfigFile": "tsconfig.test.json",
+            "skipBabel": true
+        }
+    },
+    "mapCoverage": true,
+    "collectCoverageFrom": [
+        "src/**/*.{ts,tsx}",
+        "!**/node_modules/**"
+    ],
+    "verbose": true,
+    "transform": {
+        ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx)$",
+    "moduleFileExtensions": [
+        "ts",
+        "tsx",
+        "js"
+    ],
+    "coveragePathIgnorePatterns": [
+        "/node_modules/",
+        ".*\\.d\\.ts$",
+        "/lib/",
+        "/dist/"
+    ],
+    "coverageThreshold": {
+        "global": {
+            "branches": 90,
+            "functions": 95,
+            "lines": 95,
+            "statements": 95
+        }
+    }
+
+}
