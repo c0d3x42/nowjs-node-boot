@@ -1,7 +1,7 @@
 {
     "globals": {
         "ts-jest": {
-            "tsConfigFile": "tsconfig.test.json",
+            "tsConfigFile": "./tsconfig.test.json",
             "skipBabel": true
         }
     },
@@ -22,17 +22,16 @@
     ],
     "coveragePathIgnorePatterns": [
         "/node_modules/",
-        ".*\\.d\\.ts$",
+        "/test/",
         "/lib/",
         "/dist/"
     ],
     "coverageThreshold": {
         "global": {
-            "branches": 90,
-            "functions": 95,
-            "lines": 95,
-            "statements": 95
+            "branches": 60,
+            "functions": 60,
+            "lines": 60,
+            "statements": 60
         }
     }
-
 }

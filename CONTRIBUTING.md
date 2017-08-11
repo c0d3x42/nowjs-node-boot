@@ -1,8 +1,8 @@
-# Contribute to nowjs-lib-template
+# Contribute to nowjs-node-boot
 
 ## Pushing into main repository
-If you'd like to contribute to **nowjs-lib-template** with a patch follow the following steps:
-* fork the repository interested in your change. The main one is https://github.com/nowcando/nowjs-lib-template .
+If you'd like to contribute to **nowjs-node-boot** with a patch follow the following steps:
+* fork the repository interested in your change. The main one is https://github.com/nowcando/nowjs-node-boot .
 * select the "develop" branch i present
 * apply your changes,
 * test that Test Suite hasn't been broken by running:

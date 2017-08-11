@@ -1,3 +1,4 @@
+.idea/
 node_modules/
 dist/
 *.d.ts
@@ -6,3 +7,4 @@ dist/
 typings/
 coverage/
 lib/
+nowjs-core.iml

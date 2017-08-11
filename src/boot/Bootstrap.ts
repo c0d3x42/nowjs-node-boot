@@ -10,6 +10,7 @@ import * as os from "os";
 import * as path from "path";
 
 import {  exceptions } from "nowjs-core";
+import { IApplicationService } from "nowjs-core/lib/core";
 import { CodedException } from "nowjs-core/lib/exceptions";
 import { ENV_DEVELOPMENT_TOKEN, TYPES } from "../common/index";
 import { BootOptions } from "./BootOptions";
@@ -19,12 +20,16 @@ const mlogger = getLauncherLogger();
 
 const kernel: Container = new Container();
 
-const BASE_MODULES_DIR = "modules";
+export function getKernel(): Container {
+    return kernel;
+}
+
+/* const BASE_MODULES_DIR = "modules";
 const kernelModules = ["core"];
 const startupModules = ["core"];
-const loadedModules: ContainerModule[] = [];
+const loadedModules: ContainerModule[] = []; */
 
-function loadModules(options: BootOptions) {
+/* function loadModules(options: BootOptions) {
     // tslint:disable-next-line:no-console
     mlogger.info(`Module loading started.`);
 
@@ -51,9 +56,9 @@ function loadModules(options: BootOptions) {
     }
     // tslint:disable-next-line:no-console
     mlogger.info(`Module loading finished.`);
-}
+} */
 
-function unloadModules(options: BootOptions) {
+/* function unloadModules(options: BootOptions) {
     // tslint:disable-next-line:no-console
     mlogger.info(`Module unloading started.`);
 
@@ -73,20 +78,15 @@ function unloadModules(options: BootOptions) {
 
     // tslint:disable-next-line:no-console
     mlogger.info(`Module unloading finished.`);
-}
+} */
 
-async function startUpWorker(options: BootOptions) {
+function startUpWorker(application: IApplicationService , options: BootOptions) {
 
-    if (cluster.isWorker) {
-
-        kernel.bind<Container>(TYPES.Kernel).toConstantValue(kernel);
-
-    }
     if (cluster.isWorker || process.env.NODE_ENV === ENV_DEVELOPMENT_TOKEN) {
         // let appName = process.env.appName;
         const appName = options.AppName;
-
-        const appPath = path.join(options.Paths.Apps, `${appName.toLowerCase() + ".app"}`);
+        application.start();
+        /* const appPath = path.join(options.Paths.Apps, `${appName.toLowerCase() + ".app"}`);
         const appBootPath = path.join(options.Paths.Apps, `${appName.toLowerCase() + ".app"}`, "Bootstrap");
         try {
             mlogger.info(`Application '${appName
@@ -103,15 +103,15 @@ async function startUpWorker(options: BootOptions) {
                 }' in process id:${process.pid} load failed.`, appName);
             mlogger.error( error.toString());
             process.exit(2);
-        }
+        } */
 
     }
 }
 
-function startUp(options: BootOptions) {
-
+function startUp(application: IApplicationService , options: BootOptions) {
+    kernel.bind<Container>(TYPES.Kernel).toConstantValue(kernel);
     if (process.env.NODE_ENV === ENV_DEVELOPMENT_TOKEN) {
-        startUpWorker(options);
+        startUpWorker(application, options);
     } else {
 
         if (cluster.isMaster) {
@@ -139,34 +139,27 @@ function startUp(options: BootOptions) {
 
             cluster.on("exit", (worker, code, signal) => {
                 // tslint:disable-next-line:no-console
-                mlogger.info(`worker ${worker.process.pid} died.`);
+                mlogger.error(`worker ${worker.process.pid} died.`, code, signal);
             });
         } else {
             if (process.env.NODE_ENV !== ENV_DEVELOPMENT_TOKEN) {
-                startUpWorker(options);
+                startUpWorker(application, options);
             }
         }
     }
 
 }
 
-function shutdown(options: BootOptions) {
-    // Loading sub modules here .
-    unloadModules(options);
-}
-
-export function boot(options: BootOptions) {
+export function boot(application: IApplicationService , options: BootOptions) {
     if (!options) {
         throw new CodedException(-1104, "App options can not be null.");
     }
-    if (!options.AppName) {
-        throw new CodedException(-1103, "App name can not be empty or null.");
-    }
-    const appName = options.AppName;
+    const appName = options.AppName || process.env.npm_package_name;
+    const appVersion =  process.env.npm_package_version;
 
     let banner = `\n\nThe '${colors.yellow(appName)}' application is ${colors.bold("loading")} in pid: ${process.pid}.`;
     banner += `\n\t\t${colors.green("************************************************************************")}`;
-    banner += `\n\t\t\t\t ${colors.bold(colors.yellow("Now Boot loader v1.2"))
+    banner += `\n\t\t\t\t ${colors.bold(colors.yellow("Nowjs Boot loader v1.4.0"))
         + "\t" + colors.green("pid:" + process.pid)}`;
     banner += `\n\t\t\t\t\t ${colors.bold(colors.red("www.NowCanDo.com"))}`;
     banner += `\n\t\t${colors.green("************************************************************************")}`;
@@ -190,10 +183,6 @@ export function boot(options: BootOptions) {
     banner += `, ${colors.magenta("Nodejs")}='${process.version}'  , ${colors.blue("Cwd")}='${process.cwd()}' .`;
     banner += `\n\n`;
 
-    const appPath = path.join(__dirname, "../apps/", `${appName.toLowerCase() + ".app"}`);
-    const appBootPath = path.join(__dirname, "../apps/", `${appName.toLowerCase() + ".app"}`, "Bootstrap");
-    kernel.bind<Container>(TYPES.Kernel).toConstantValue(kernel);
-
     process.on("unhandledRejection", (err: Error, p: any) => {
         mlogger.error(`There is a unhandeled promise rejection :\n${err.message}`, err, p);
         process.exit(2);
@@ -204,13 +193,8 @@ export function boot(options: BootOptions) {
     });
 
     try {
-        if (fs.existsSync(appPath) && (fs.existsSync(appBootPath + ".ts") || fs.existsSync(appBootPath + ".js"))) {
-            mlogger.info( banner);
-            startUp(options);
-
-        } else {
-            throw new CodedException(-1203, `There is no app with '${appName}' in apps directory.`);
-        }
+        mlogger.info( banner);
+        startUp(application, options);
     } catch (error) {
         throw error;
     }

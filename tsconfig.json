@@ -36,16 +36,10 @@
       "es2017.object",
       "es2017.sharedmemory",
       "esnext.asynciterable"
-
-    ],
-
-    "outDir": "dist"
+      
+    ]
 
   },
-  "include": [
-    "src/**/*.ts",
-    "test/**/*.ts"
-  ],
   "exclude": [
     "dist",
     "lib",
