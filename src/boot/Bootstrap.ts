@@ -24,86 +24,12 @@ export function getKernel(): Container {
     return kernel;
 }
 
-/* const BASE_MODULES_DIR = "modules";
-const kernelModules = ["core"];
-const startupModules = ["core"];
-const loadedModules: ContainerModule[] = []; */
-
-/* function loadModules(options: BootOptions) {
-    // tslint:disable-next-line:no-console
-    mlogger.info(`Module loading started.`);
-
-    for (const name of startupModules) {
-        try {
-            // tslint:disable-next-line:no-console
-            mlogger.info(`Module "${name}" loading ...`);
-            const modulePath = path.join(options.Paths.Modules, name, "Bootstrap");
-            const subModules = require(`./${modulePath}`);
-            // tslint:disable-next-line:forin
-            for (const subModuleName in subModules) {
-                const subModule = require(`./${modulePath}`)[subModuleName];
-                kernel.load(subModule);
-                loadedModules.push(subModule);
-                // tslint:disable-next-line:no-console
-                mlogger.info(`Module "${name}" loaded.`);
-            }
-
-        } catch (error) {
-            // tslint:disable-next-line:no-console
-            mlogger.error(`Module "${name}" loading failed. \n Error: ${error} .`, error);
-        }
-
-    }
-    // tslint:disable-next-line:no-console
-    mlogger.info(`Module loading finished.`);
-} */
-
-/* function unloadModules(options: BootOptions) {
-    // tslint:disable-next-line:no-console
-    mlogger.info(`Module unloading started.`);
-
-    for (const module of loadedModules) {
-        try {
-            // tslint:disable-next-line:no-console
-            mlogger.info(`Module "${name}" unloading ...`);
-            kernel.unload(module);
-            // tslint:disable-next-line:no-console
-            mlogger.info(`Module "${name}" unloaded.`);
-        } catch (error) {
-            // tslint:disable-next-line:no-console
-            mlogger.error(`Module "${name}" unloading failed. \n Error: ${error} .`, error);
-        }
-
-    }
-
-    // tslint:disable-next-line:no-console
-    mlogger.info(`Module unloading finished.`);
-} */
-
 function startUpWorker(application: IApplicationService , options: BootOptions) {
 
     if (cluster.isWorker || process.env.NODE_ENV === ENV_DEVELOPMENT_TOKEN) {
         // let appName = process.env.appName;
         const appName = options.AppName;
         application.start();
-        /* const appPath = path.join(options.Paths.Apps, `${appName.toLowerCase() + ".app"}`);
-        const appBootPath = path.join(options.Paths.Apps, `${appName.toLowerCase() + ".app"}`, "Bootstrap");
-        try {
-            mlogger.info(`Application '${appName
-                }' in process id:${process.pid} loading.`, appName);
-            const appModule = require(appBootPath);
-            // load module to kernel
-            kernel.load(appModule.subModule);
-            // startup application module
-            await appModule.startup(kernel, options);
-            mlogger.info(`Application '${appName
-                }' in process id:${process.pid} loaded.`, appName);
-        } catch (error) {
-            mlogger.error(`Application '${appName
-                }' in process id:${process.pid} load failed.`, appName);
-            mlogger.error( error.toString());
-            process.exit(2);
-        } */
 
     }
 }
