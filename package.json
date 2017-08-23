@@ -1,7 +1,7 @@
 {
   "name": "nowjs-node-boot",
   "description": "NowCanDo Javascript  [nowjs-node-boot] is a  library written by TypeScript code maintains under Apache 2.0 licence",
-  "version": "0.9.6",
+  "version": "0.9.8",
   "private": false,
   "scripts": {
     "debug": "npm run-script build:debug ",
@@ -17,12 +17,15 @@
     "lint": "tslint -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prepare": "npm run lint && npm run test && npm run build:release",
     "preversion": "npm test && npm run changelog:update",
-    "version": "npm run build:release",
-    "postversion": "git push && git push --tags && npm clean:release",
-    "release:patch": "npm version patch -m \"Upgrade to %s for patch and some bug fixes.\"",
-    "release:minor": "npm version minor -m \"Upgrade to %s for minor enhancments & and bug fixes.\"",
-    "release:major": "npm version major -m \"Upgrade to %s for major features and bug fixes.\"",
-    "changelog:update": "github-changes -o nowcando -r nowjs-node-boot --no-merges && git commit -a -m 'updated CHANGELOG.md'"
+    "version": "npm run build:release ",
+    "postversion": "git push && git push --tags && npm run changelog:update && git push && npm run clean:release",
+    "release:patch": "npm version patch -m \"upgrade: Upgrade to %s for patch and some bug fixes.\"",
+    "release:minor": "npm version minor -m \"upgrade: Upgrade to %s for minor enhancments & and bug fixes.\"",
+    "release:major": "npm version major -m \"upgrade: Upgrade to %s for major features and bug fixes.\"",
+    "changelog:update": "github-changes -o nowcando -r nowjs-core -b develop && git commit -a -m 'update: The CHANGELOG.md updated.'",
+    "docs:update": "typedoc --out ./docs/documentation/ ./src/  && git commit -a -m 'update: The documentation updated.'",
+    "docs:clean": "rm -rf ./docs/documentation/*",
+    "docs:publish": "{{PUBLISH TO DOC_SITE_URL}}"
   },
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -56,24 +59,24 @@
   "dependencies": {
     "colors": "^1.1.2",
     "inversify": "^4.3.0",
-    "nowjs-core": "^0.9.7",
+    "nowjs-core": "^0.9.24",
     "nowjs-node-boot": ">=0.9.4",
-    "nowjs-node-core": "^0.9.4",
-    "reflect-metadata": ">=0.1.10",
-    "winston": "^2.3.1"
+    "nowjs-node-core": "^0.9.6",
+    "pino": "^4.7.1",
+    "pino-multi-stream": "^3.1.1",
+    "reflect-metadata": ">=0.1.10"
   },
   "devDependencies": {
     "@types/colors": "^1.1.3",
     "@types/inversify": "^2.0.33",
     "@types/jest": ">=20.0.5",
     "@types/node": ">=8.0.17",
-    "@types/winston": "^2.3.4",
+    "@types/pino": "^4.7.0",
     "full-icu": ">=1.1.3",
     "jest": ">=20.0.4",
     "jest-environment-node-debug": ">=2.0.0",
     "ts-jest": ">=20.0.7",
     "ts-node": ">=3.2.1",
-    "typescript": ">=2.4.2",
-    "winston-daily-rotate-file": "^1.4.6"
+    "typescript": ">=2.4.2"
   }
 }

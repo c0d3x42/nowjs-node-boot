@@ -1,48 +1,34 @@
-import * as paths from "path";
-import * as winston from "winston";
-
-let launcherLogger: winston.LoggerInstance;
+import * as fs from "fs";
+import * as path from "path";
+import * as pino from "pino";
+// tslint:disable-next-line:no-var-requires
+const multistream = require("pino-multi-stream").multistream;
+const cwd = process.cwd();
+const LOCAL_LOG_FILE = "boot";
+let launcherLogger: pino.BaseLogger;
 
 export function getLauncherLogger() {
 
     if (launcherLogger) { return launcherLogger; }
-    const logDirPath = paths.join(process.cwd(), "logs");
+    const logDirPath = path.join(cwd, "logs");
     const env = process.env.NODE_ENV || "development";
-    const tsFormat = () => `${(new Date()).toISOString()} , ${process.pid}`;
-    const colors = {
-        silly: "magenta",
-        verbose: "cyan",
-        // tslint:disable-next-line:object-literal-sort-keys
-        debug: "blue",
-        error: "red",
-        data: "grey",
-        warn: "yellow",
-        info: "green",
-    };
-    launcherLogger = winston.loggers.add("LAUNCHER", {
-        transports: [
-            // colorize the output to the console
-            new (winston.transports.Console)({
-                prettyPrint: true,
-                // tslint:disable-next-line:object-literal-sort-keys
-                colorize: true,
-                level: "silly",
-                timestamp: tsFormat,
-            }),
-            new (require("winston-daily-rotate-file"))({
-                colorize: false,
-                datePattern: "yyyy-MM-dd",
-                filename: paths.join(logDirPath, `-launcher.log`),
-                handleExceptions: true,
-                json: true,
-                level: env === "development" ? "verbose" : "info",
-                maxFiles: 5,
-                maxsize: 5242880, // 5MB
-                prepend: true,
-                timestamp: tsFormat,
-
-            }),
-        ],
-    });
+    const fileOptions = { flags: "a", defaultEncoding : "utf8" };
+    const prettyConsole = pino.pretty();
+    prettyConsole.pipe(process.stdout);
+    if (!fs.existsSync(logDirPath)) {
+        fs.mkdirSync(logDirPath);
+    }
+    this.generalFileStream = fs.createWriteStream(path.join(logDirPath, `${LOCAL_LOG_FILE}.log`), fileOptions);
+    const streams = [
+        {
+            level: "trace",
+            stream: prettyConsole,
+        },
+        {
+            level: "trace",
+            stream: this.generalFileStream,
+        },
+    ];
+    launcherLogger = pino({level: "debug"}, multistream(streams));
     return launcherLogger;
 }
