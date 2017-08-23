@@ -7,12 +7,13 @@ import { IApplicationService } from "nowjs-core/lib/core";
 import { ArgumentException, CodedException } from "nowjs-core/lib/exceptions";
 import { BootOptions, getLauncherLogger } from "./boot/index";
 import { ENV_DEVELOPMENT_TOKEN } from "./common/index";
-
-/**
+/*
  * The nowjs application bootloader.
  * @example node launch  --worker-limit 2 --log-level debug --mode distributed .
+ *
  * @export
- * @param {BootOptions} options
+ * @param {IApplicationService} application
+ * @param {BootOptions} [options]
  */
 export function boot(application: IApplicationService , options?: BootOptions) {
     const logger = getLauncherLogger();
