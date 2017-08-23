@@ -1,5 +1,11 @@
 ## Change Log
 
+### v0.9.6 (2017/08/12 18:10 +00:00)
+- [f85cbda](https://github.com/nowcando/nowjs-node-boot/commit/f85cbdaf6b296aade3555eb897505ea4a9d1cc59) Upgrade to 0.9.6 for patch and some bug fixes. (@saeedtabrizi)
+- [4e45ad9](https://github.com/nowcando/nowjs-node-boot/commit/4e45ad96acf7d3752f9d4306d7b4bde2de1ac723) updated CHANGELOG.md (@saeedtabrizi)
+- [8d04af3](https://github.com/nowcando/nowjs-node-boot/commit/8d04af3197446eb94999d9e3ffed6469dd8ea5b0) fix: npm run clean:release (@saeedtabrizi)
+- [1b89799](https://github.com/nowcando/nowjs-node-boot/commit/1b89799d9359d5fb0f87373bc36de13e83de34e1) update package changelog (@saeedtabrizi)
+
 ### v0.9.5 (2017/08/12 16:22 +00:00)
 - [372c865](https://github.com/nowcando/nowjs-node-boot/commit/372c8651ef7c6af48bc8228a9f53464420b945e9) Upgrade to 0.9.5 for patch and some bug fixes. (@saeedtabrizi)
 - [e40146e](https://github.com/nowcando/nowjs-node-boot/commit/e40146e7fb842a6ebacc4658225666bbbaaf5dc5) update autodeploy (@saeedtabrizi)
