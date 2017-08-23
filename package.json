@@ -1,7 +1,7 @@
 {
   "name": "nowjs-node-boot",
   "description": "NowCanDo Javascript  [nowjs-node-boot] is a  library written by TypeScript code maintains under Apache 2.0 licence",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "private": false,
   "scripts": {
     "debug": "npm run-script build:debug ",
